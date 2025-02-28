@@ -7,6 +7,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    let upperArticle = WikiArticle(id: "1", title: "記事1", text: "サンプルテキスト", browseCount: 1000)
+    let underArticle = WikiArticle(id: "2", title: "記事2", text: "テキスト", browseCount: 2000)
+    
+    var quiz: Quiz {
+        Quiz(upperArticle: upperArticle, underArticle: underArticle)
+    }
+        
+    
     var body: some View {
         VStack(spacing: 20) {
             Text("WikiButtle")
@@ -21,87 +30,11 @@ struct ContentView: View {
             Spacer()
             
             // 1つ目の記事
-            VStack {
-                
-                VStack(alignment: .leading) {
-                    
-                    HStack {
-                        Text("記事のタイトル")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                        
-                        Spacer()
-                        
-                        Text("記事を見る")
-                            .foregroundStyle(.link)
-                            .hidden()
-                    }
-                    
-                    Divider()
-                Text("記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．")
-                }
-                
-                HStack(spacing: 20) {
-                    Text("長い")
-                        .fontWeight(.bold)
-                        .frame(width:150, height: 40)
-                        .background(.teal)
-                        .clipShape(Capsule())
-                    
-                    Text("閲覧数が多い")
-                        .fontWeight(.bold)
-                        .frame(width:150, height: 40)
-                        .background(.green)
-                        .clipShape(Capsule())
-                    
-                }
-            }
-            .padding()
-            .frame(height: 240)
-            .background(Color(.secondarySystemFill))
-            .clipShape(RoundedRectangle(cornerRadius: 15))
+            ArticleView(article: quiz.upperArticle)
             
             // 2つ目の記事
-            VStack {
-                
-                VStack(alignment: .leading) {
-                    
-                    HStack {
-                        Text("記事のタイトル")
-                            .font(.headline)
-                            .fontWeight(.bold)
-                        
-                        Spacer()
-                         
-                        // 答えを表示した後に記事を見れるようにリンクを貼る
-                        Text("記事を見る")
-                            .foregroundStyle(.link)
-//                            .hidden()
-                    }
-                    
-                    Divider()
-                Text("記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．記事の本文テキスト．")
-                }
-                
-                HStack(spacing: 20) {
-                    Text("12000文字")
-                        .fontWeight(.bold)
-                        .frame(width:150, height: 40)
-                        .background(Color(.tertiaryLabel)) // 不正解のものは薄くする
-                        .clipShape(Capsule())
-                    
-                    Text("4000回")
-                        .fontWeight(.bold)
-                        .frame(width:150, height: 40)
-                        .background(.green)
-                        .clipShape(Capsule())
-                    
-                }
-            }
-            .padding()
-            .frame(height: 240)
-            .background(Color(.secondarySystemFill))
-            .clipShape(RoundedRectangle(cornerRadius: 15))
+            ArticleView(article: quiz.underArticle)
+        
             
             Spacer()
             // テキスト
