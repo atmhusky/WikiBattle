@@ -8,6 +8,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    let quizViewModel = QuizViewModel()
+    
     let upperArticle = WikiArticle(id: "1", title: "記事1", text: "サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", browseCount: 1000)
     let underArticle = WikiArticle(id: "2", title: "記事2", text: "テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト", browseCount: 2000)
     
