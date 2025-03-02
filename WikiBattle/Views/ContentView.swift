@@ -10,8 +10,8 @@ struct ContentView: View {
     
     let quizViewModel = QuizViewModel()
     
-    let upperArticle = WikiArticle(id: "1", title: "記事1", text: "サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", browseCount: 1000)
-    let underArticle = WikiArticle(id: "2", title: "記事2", text: "テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト", browseCount: 2000)
+    let upperArticle = WikiArticle.WikiPage(pageid: 1, title: "記事1", extract: "サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", pageviews: ["a": 1, "b": 2, "c": nil])
+    let underArticle = WikiArticle.WikiPage(pageid: 2, title: "記事2", extract: "サンプルテキストサンプルテキストサンプルテキスト\nサンプルテキストサンプルテキスト== hoge ==サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", pageviews: ["a": 4, "b": 10, "c": 9])
     
     var quiz: Quiz {
         Quiz(upperArticle: upperArticle, underArticle: underArticle)
@@ -39,16 +39,16 @@ struct ContentView: View {
             // 1つ目の記事
             ArticleView(
                 article: quiz.upperArticle,
-                isCorrectLength: quiz.upperArticle.id == quiz.correctLengthArcicleId,
-                isCorrectBrowse: quiz.upperArticle.id == quiz.correctBrowseArcicleId,
+                isCorrectLength: quiz.upperArticle.pageid == quiz.correctLengthArcicleId,
+                isCorrectBrowse: quiz.upperArticle.pageid == quiz.correctBrowseArcicleId,
                 isCheckingAnswer: isCheckingAnswer
             )
             
             // 2つ目の記事
             ArticleView(
                 article: quiz.underArticle,
-                isCorrectLength: quiz.underArticle.id == quiz.correctLengthArcicleId,
-                isCorrectBrowse: quiz.underArticle.id == quiz.correctBrowseArcicleId,
+                isCorrectLength: quiz.underArticle.pageid == quiz.correctLengthArcicleId,
+                isCorrectBrowse: quiz.underArticle.pageid == quiz.correctBrowseArcicleId,
                 isCheckingAnswer: isCheckingAnswer
             )
             

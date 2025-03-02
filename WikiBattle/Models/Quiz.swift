@@ -7,14 +7,14 @@
 import Foundation
 
 struct Quiz {
-    let upperArticle: WikiArticle
-    let underArticle: WikiArticle
+    let upperArticle: WikiArticle.WikiPage
+    let underArticle: WikiArticle.WikiPage
     
-    var correctLengthArcicleId: String {
-        self.upperArticle.textLength > self.underArticle.textLength ? self.upperArticle.id : self.underArticle.id
+    var correctLengthArcicleId: Int {
+        self.upperArticle.textLength > self.underArticle.textLength ? self.upperArticle.pageid : self.underArticle.pageid
     }
     
-    var correctBrowseArcicleId: String {
-        self.upperArticle.browseCount > self.underArticle.browseCount ? self.upperArticle.id : self.underArticle.id
+    var correctBrowseArcicleId: Int {
+        self.upperArticle.browseCount > self.underArticle.browseCount ? self.upperArticle.pageid : self.underArticle.pageid
     }
 }

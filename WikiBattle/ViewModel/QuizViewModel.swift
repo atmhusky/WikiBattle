@@ -41,7 +41,7 @@ class QuizViewModel {
         }
     }
     
-    private func fetchArticle(pageId: Int) async throws -> WikiArticleJson.WikiPage {
+    private func fetchArticle(pageId: Int) async throws -> WikiArticle.WikiPage {
         let urlString = "https://ja.wikipedia.org/w/api.php?action=query&format=json&prop=extracts|pageviews&explaintext=true"
         guard var url = URL(string: urlString) else { throw URLError(.badURL) }
         url.append(queryItems: [.init(name: "pageids", value: String(pageId))])
@@ -50,10 +50,13 @@ class QuizViewModel {
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             let decoder = JSONDecoder()
-            let response = try decoder.decode(WikiArticleJson.self, from: data)
+            let response = try decoder.decode(WikiArticle.self, from: data)
 
             if let page = response.query.pages[String(pageId)] {
-                print(page)  // 表示確認用
+//                print(page)   表示確認用
+                print(page.browseCount)
+                print(page.textLength)
+                print(page.formattedExtract)
                 return page
             } else {
                 throw NSError(domain: "QuizViewModel", code: 0, userInfo: [NSLocalizedDescriptionKey: "記事が見つかりません"])

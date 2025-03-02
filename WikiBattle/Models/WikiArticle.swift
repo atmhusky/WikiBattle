@@ -1,27 +1,47 @@
 //
-//  WikiArticle.swift
+//  WikiArticleJson.swift
 //  WikiBattle
 //
 
 import Foundation
 
-struct WikiArticle {
-    let id: String  // 記事のID
-    let title: String  // 記事のタイトル
-    let text: String  // 記事の本文
+struct WikiArticle: Codable {
+    let query: Pages
     
-    // 記事の長さ
-    var textLength: Int {
-        self.text.count
+    struct Pages: Codable {
+        let pages: [String: WikiPage]
     }
-    
-    let browseCount: Int  // 過去60日間の記事の閲覧数(viewという名前は意図的に避けた)
-    
-    // 記事のURL
-    var url: URL {
-        var url = URL(string: "http://ja.wikipedia.org/w/index.php")!
-        url.append(queryItems: [.init(name: "curid", value: self.id)])
+                        
+    struct WikiPage: Codable {
+        let pageid: Int
+        let title: String
+        let extract: String
+        let pageviews: [String: Int?]
         
-        return url
+        // extractに含まれるノイズを削除した本文
+        var formattedExtract: String {
+            // エスケープシーケンスの削除
+            let withoutNewlines = self.extract.replacingOccurrences(of: "\n", with: " ")
+            
+            // 見出しの削除
+            let regexPattern = "(={2,3}\\s*[^=]+\\s*={2,3})"
+            let regex = try? NSRegularExpression(pattern: regexPattern, options: [])
+            let range = NSRange(location: 0, length: withoutNewlines.utf16.count)
+            let result = regex?.stringByReplacingMatches(in: withoutNewlines, options: [], range: range, withTemplate: "")
+            let formattedText = result?.trimmingCharacters(in: .whitespacesAndNewlines) ?? withoutNewlines
+            
+            return formattedText
+        }
+
+        // 本文の長さ
+        var textLength: Int {
+            self.formattedExtract.count
+        }
+        
+        // pageviewsの合計値
+        var browseCount: Int {
+            self.pageviews.values.compactMap { $0 ?? 0 }.reduce(0, +)
+        }
+        
     }
 }
