@@ -9,12 +9,31 @@ import Foundation
 class QuizViewModel {
     
     private var ids: [Int] = []  // 取得した記事のID
+    private var quiz: Quiz?
     
     init() {
         Task {
-            ids = try await fetchRandomId()  // fetchの動作確認用
-            let page = try await fetchArticle(pageId: ids[0]) // fetchの動作確認用
+            await createQuiz()            
+            print(quiz ?? "error") // 表示確認用
+            print(quiz?.correctBrowseArcicleId ?? "error")  // 表示確認用
+            print(quiz?.correctLengthArcicleId ?? "error")  // 表示確認用
         }
+    }
+    
+    private func createQuiz() async {
+        do {
+            ids = try await fetchRandomId()
+            
+            var articles: [WikiArticle.WikiPage] = []
+            for id in ids {
+                let article = try await fetchArticle(pageId: id)
+                articles.append(article)
+            }
+            quiz = Quiz(upperArticle: articles[0], underArticle: articles[1])
+        } catch {
+            print("Quizの作成エラー: \(error)")
+        }
+        
     }
     
     // MediaWiki APIを用いてランダムに2つ記事を識別するIDを取得する
@@ -29,10 +48,6 @@ class QuizViewModel {
             let response = try decoder.decode(WikiId.self, from: data)
             
             let ids = response.query.random.map { $0.id }
-            let titles = response.query.random.map { $0.title }  // 表示確認用
-            
-            print(ids)  // 表示確認用
-            print(titles)  // 表示確認用
             
             return ids
         } catch {
@@ -41,11 +56,11 @@ class QuizViewModel {
         }
     }
     
+    // MediaWiki APIを用いて記事の詳細情報を取得する
     private func fetchArticle(pageId: Int) async throws -> WikiArticle.WikiPage {
         let urlString = "https://ja.wikipedia.org/w/api.php?action=query&format=json&prop=extracts|pageviews&explaintext=true"
         guard var url = URL(string: urlString) else { throw URLError(.badURL) }
         url.append(queryItems: [.init(name: "pageids", value: String(pageId))])
-
 
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
@@ -53,10 +68,6 @@ class QuizViewModel {
             let response = try decoder.decode(WikiArticle.self, from: data)
 
             if let page = response.query.pages[String(pageId)] {
-//                print(page)   表示確認用
-                print(page.browseCount)
-                print(page.textLength)
-                print(page.formattedExtract)
                 return page
             } else {
                 throw NSError(domain: "QuizViewModel", code: 0, userInfo: [NSLocalizedDescriptionKey: "記事が見つかりません"])
