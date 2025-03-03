@@ -8,7 +8,7 @@ import SwiftUI
 
 struct ArticleView: View {
     
-    let article: WikiArticle
+    let article: WikiArticle.WikiPage
     let isCorrectLength: Bool
     let isCorrectBrowse: Bool
     var isCheckingAnswer: Bool = false
@@ -32,7 +32,7 @@ struct ArticleView: View {
                 }
                 
                 Divider()
-                Text(article.text)
+                Text(article.formattedExtract)
             }
             
             HStack(spacing: 20) {
@@ -68,6 +68,6 @@ struct ArticleView: View {
 }
 
 #Preview {
-    ArticleView(article: WikiArticle(id: "1", title: "記事1", text: "サンプルテキスト", browseCount: 1000),
+    ArticleView(article: WikiArticle.WikiPage(pageid: 1, title: "記事1", extract: "サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", pageviews: ["a": 1, "b": 2, "c": nil]),
                 isCorrectLength: false, isCorrectBrowse: true, isCheckingAnswer: false)
 }
