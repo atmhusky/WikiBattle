@@ -20,20 +20,43 @@ class QuizViewModel {
         }
     }
     
+    // ランダムで記事を2つ取得し，Quizを生成する
     private func createQuiz() async {
-        do {
-            ids = try await fetchRandomId()
-            
-            var articles: [WikiArticle.WikiPage] = []
-            for id in ids {
-                let article = try await fetchArticle(pageId: id)
-                articles.append(article)
+        while true {
+            do {
+                ids = try await fetchRandomId()
+                var articles: [WikiArticle.WikiPage] = []
+                
+                for id in ids {
+                    let article = try await fetchArticle(pageId: id)
+                    articles.append(article)
+                }
+                
+                if isValidQuiz(articles) {
+                    quiz = Quiz(upperArticle: articles[0], underArticle: articles[1])
+                    break
+                } else {
+                    print("クイズとして不適切なので再生成")
+                }
+            } catch {
+                print("Quizの作成エラー: \(error)")
+                break
             }
-            quiz = Quiz(upperArticle: articles[0], underArticle: articles[1])
-        } catch {
-            print("Quizの作成エラー: \(error)")
         }
+    }
+    
+    // クイズが問題として適切かどうかを判定
+    private func isValidQuiz(_ articles: [WikiArticle.WikiPage]) -> Bool {
         
+        let article1 = articles[0]
+        let article2 = articles[1]
+        
+        // 文字数・閲覧数が一致している場合は答えが2超過になるため不適切
+        // 文字数が100以下の場合は全文表示できてしまうので不適切
+        return article1.browseCount != article2.browseCount &&
+               article1.textLength != article2.textLength &&
+               article1.textLength > 100 &&
+               article2.textLength > 100
     }
     
     // MediaWiki APIを用いてランダムに2つ記事を識別するIDを取得する
