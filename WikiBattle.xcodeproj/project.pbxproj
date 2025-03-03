@@ -6,13 +6,8 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		52E07C182D762C20007A2D2F /* SafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E07C172D762C20007A2D2F /* SafariView.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		525760952D70DFF300AC302E /* WikiBattle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiBattle.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		52E07C172D762C20007A2D2F /* SafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -37,7 +32,6 @@
 		5257608C2D70DFF300AC302E = {
 			isa = PBXGroup;
 			children = (
-				52E07C172D762C20007A2D2F /* SafariView.swift */,
 				525760972D70DFF300AC302E /* WikiBattle */,
 				525760962D70DFF300AC302E /* Products */,
 			);
@@ -125,7 +119,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52E07C182D762C20007A2D2F /* SafariView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
