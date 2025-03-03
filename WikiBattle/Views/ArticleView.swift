@@ -1,7 +1,7 @@
 //
 //  ArticleView.swift
 //  WikiBattle
-//  
+//
 
 
 import SwiftUI
@@ -11,7 +11,10 @@ struct ArticleView: View {
     let article: WikiArticle.WikiPage
     let isCorrectLength: Bool
     let isCorrectBrowse: Bool
-    var isCheckingAnswer: Bool = false
+    
+    @Binding var isCheckingAnswer: Bool
+    @Binding var isCorrect: Bool
+    @Binding var isShowSafari: Bool
     
     var body: some View {
         VStack {
@@ -19,20 +22,28 @@ struct ArticleView: View {
             VStack(alignment: .leading) {
                 
                 HStack {
-                    Text(article.title)
-                        .font(.headline)
-                        .fontWeight(.bold)
+                    // タイトルは1行にするために，長かったら横にスクロールできるようにする
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        Text(article.title)
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .lineLimit(1)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                    }
                     
                     Spacer()
                     
                     if (isCheckingAnswer) {
-                        Text("記事を見る")
-                            .foregroundStyle(.link)
+                        Button("記事を見る") {
+                            isShowSafari = true
+                        }
                     }
                 }
                 
                 Divider()
-                Text(article.formattedExtract)
+                Text(article.formattedExtract.count > 100
+                     ? String(article.formattedExtract.prefix(100)) + "..." :article.formattedExtract
+                )
             }
             
             HStack(spacing: 20) {
@@ -50,11 +61,13 @@ struct ArticleView: View {
                         .clipShape(Capsule())
                 } else {
                     ButtonView(buttonType: .length) {
-                        print("Length Pushed")
+                        isCorrect = self.isCorrectLength
+                        isCheckingAnswer = true
                     }
                     
                     ButtonView(buttonType: .browse) {
-                        print("Browse Pushed")
+                        isCorrect = self.isCorrectBrowse
+                        isCheckingAnswer = true
                     }
                 }
                 
@@ -64,10 +77,18 @@ struct ArticleView: View {
         .frame(height: 240)
         .background(Color(.secondarySystemFill))
         .clipShape(RoundedRectangle(cornerRadius: 15))
+        .sheet(isPresented: $isShowSafari) {
+            SafariView(url: article.url)
+                .ignoresSafeArea(edges: [.bottom])
+        }
     }
 }
 
 #Preview {
-    ArticleView(article: WikiArticle.WikiPage(pageid: 1, title: "記事1", extract: "サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", pageviews: ["a": 1, "b": 2, "c": nil]),
-                isCorrectLength: false, isCorrectBrowse: true, isCheckingAnswer: false)
+    @Previewable @State var isCheckingAnswer = true
+    @Previewable @State var isCorrect: Bool = true
+    @Previewable @State var isShowSafari: Bool = false
+    
+    ArticleView(article: WikiArticle.WikiPage(pageid: 1, title: "記事1記事1記事1記事1記事1記事1記事1記事1記事1記事1", extract: "サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", pageviews: ["a": 1, "b": 2, "c": nil]),
+                isCorrectLength: false, isCorrectBrowse: true, isCheckingAnswer: $isCheckingAnswer, isCorrect: $isCorrect, isShowSafari: $isShowSafari)
 }
