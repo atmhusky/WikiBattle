@@ -19,6 +19,7 @@ class QuizViewModel: ObservableObject {
     
     // ランダムで記事を2つ取得し，Quizを生成する
     func createQuiz() async {
+        quiz = nil
         while true {
             do {
                 ids = try await fetchRandomId()
