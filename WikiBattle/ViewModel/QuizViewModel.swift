@@ -18,6 +18,7 @@ class QuizViewModel: ObservableObject {
     }
     
     // ランダムで記事を2つ取得し，Quizを生成する
+    @MainActor
     func createQuiz() async {
         quiz = nil
         while true {
