@@ -1,7 +1,7 @@
 //
 //  ArticleView.swift
 //  WikiBattle
-//  
+//
 
 
 import SwiftUI
@@ -19,9 +19,14 @@ struct ArticleView: View {
             VStack(alignment: .leading) {
                 
                 HStack {
-                    Text(article.title)
-                        .font(.headline)
-                        .fontWeight(.bold)
+                    // タイトルは1行にするために，長かったら横にスクロールできるようにする
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        Text(article.title)
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .lineLimit(1)
+                            .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                    }
                     
                     Spacer()
                     
@@ -32,7 +37,9 @@ struct ArticleView: View {
                 }
                 
                 Divider()
-                Text(article.formattedExtract)
+                Text(article.formattedExtract.count > 100
+                     ? String(article.formattedExtract.prefix(100)) + "..." :article.formattedExtract
+                )
             }
             
             HStack(spacing: 20) {
@@ -68,6 +75,6 @@ struct ArticleView: View {
 }
 
 #Preview {
-    ArticleView(article: WikiArticle.WikiPage(pageid: 1, title: "記事1", extract: "サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", pageviews: ["a": 1, "b": 2, "c": nil]),
-                isCorrectLength: false, isCorrectBrowse: true, isCheckingAnswer: false)
+    ArticleView(article: WikiArticle.WikiPage(pageid: 1, title: "記事1記事1記事1記事1記事1記事1記事1記事1記事1記事1", extract: "サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", pageviews: ["a": 1, "b": 2, "c": nil]),
+                isCorrectLength: false, isCorrectBrowse: true, isCheckingAnswer: true)
 }
