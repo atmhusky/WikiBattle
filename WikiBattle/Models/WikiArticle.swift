@@ -27,9 +27,12 @@ struct WikiArticle: Codable {
             let regexPattern = "(={2,3}\\s*[^=]+\\s*={2,3})"
             let regex = try? NSRegularExpression(pattern: regexPattern, options: [])
             let range = NSRange(location: 0, length: withoutNewlines.utf16.count)
-            let result = regex?.stringByReplacingMatches(in: withoutNewlines, options: [], range: range, withTemplate: "")
-            let formattedText = result?.trimmingCharacters(in: .whitespacesAndNewlines) ?? withoutNewlines
+            let result = regex?.stringByReplacingMatches(in: withoutNewlines, options: [], range: range, withTemplate: "") ?? withoutNewlines
             
+            // 余計な空白を削除
+            let cleanedText = result.replacingOccurrences(of: "\\s+", with: " ", options: .regularExpression)
+            
+            let formattedText = cleanedText.trimmingCharacters(in: .whitespacesAndNewlines)
             return formattedText
         }
 
