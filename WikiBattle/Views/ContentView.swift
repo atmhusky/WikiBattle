@@ -8,18 +8,12 @@ import SwiftUI
 
 struct ContentView: View {
     
-    let quizViewModel = QuizViewModel()
-    
-    let upperArticle = WikiArticle.WikiPage(pageid: 1, title: "記事1", extract: "サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", pageviews: ["a": 1, "b": 2, "c": nil])
-    let underArticle = WikiArticle.WikiPage(pageid: 2, title: "記事2", extract: "サンプルテキストサンプルテキストサンプルテキスト\nサンプルテキストサンプルテキスト== hoge ==サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", pageviews: ["a": 4, "b": 10, "c": 9])
-    
-    var quiz: Quiz {
-        Quiz(upperArticle: upperArticle, underArticle: underArticle)
-    }
+    @ObservedObject var quizViewModel = QuizViewModel()
     
     @State var isCheckingAnswer = true
     
     var body: some View {
+        
         VStack(spacing: 20) {
             Text("WikiButtle")
                 .font(.title)
@@ -36,26 +30,37 @@ struct ContentView: View {
                 .font(.title2)
                 .opacity(isCheckingAnswer ? 1 : 0)
             
-            // 1つ目の記事
-            ArticleView(
-                article: quiz.upperArticle,
-                isCorrectLength: quiz.upperArticle.pageid == quiz.correctLengthArcicleId,
-                isCorrectBrowse: quiz.upperArticle.pageid == quiz.correctBrowseArcicleId,
-                isCheckingAnswer: isCheckingAnswer
-            )
             
-            // 2つ目の記事
-            ArticleView(
-                article: quiz.underArticle,
-                isCorrectLength: quiz.underArticle.pageid == quiz.correctLengthArcicleId,
-                isCorrectBrowse: quiz.underArticle.pageid == quiz.correctBrowseArcicleId,
-                isCheckingAnswer: isCheckingAnswer
-            )
+            if let quiz = quizViewModel.quiz {
+                // 1つ目の記事
+                ArticleView(
+                    article: quiz.upperArticle,
+                    isCorrectLength: quiz.upperArticle.pageid == quiz.correctLengthArcicleId,
+                    isCorrectBrowse: quiz.upperArticle.pageid == quiz.correctBrowseArcicleId,
+                    isCheckingAnswer: isCheckingAnswer
+                )
+                
+                // 2つ目の記事
+                ArticleView(
+                    article: quiz.underArticle,
+                    isCorrectLength: quiz.underArticle.pageid == quiz.correctLengthArcicleId,
+                    isCorrectBrowse: quiz.underArticle.pageid == quiz.correctBrowseArcicleId,
+                    isCheckingAnswer: isCheckingAnswer
+                )
+            } else {
+                Text("")
+                .onAppear() {
+                    print("読込中")
+                }
+            }
             
             
             // 次の問題を出題するボタン
             ButtonView(buttonType: .next) {
                 print("Next Pushed")
+                Task {
+                    await quizViewModel.createQuiz()
+                }
             }
             .opacity(isCheckingAnswer ? 1 : 0)
             

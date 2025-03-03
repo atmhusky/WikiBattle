@@ -6,22 +6,19 @@
 
 import Foundation
 
-class QuizViewModel {
+class QuizViewModel: ObservableObject {
     
     private var ids: [Int] = []  // 取得した記事のID
-    private var quiz: Quiz?
+    @Published var quiz: Quiz?
     
     init() {
         Task {
-            await createQuiz()            
-            print(quiz ?? "error") // 表示確認用
-            print(quiz?.correctBrowseArcicleId ?? "error")  // 表示確認用
-            print(quiz?.correctLengthArcicleId ?? "error")  // 表示確認用
+            await createQuiz()
         }
     }
     
     // ランダムで記事を2つ取得し，Quizを生成する
-    private func createQuiz() async {
+    func createQuiz() async {
         while true {
             do {
                 ids = try await fetchRandomId()
