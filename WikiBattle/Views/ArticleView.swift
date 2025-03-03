@@ -79,6 +79,7 @@ struct ArticleView: View {
         .clipShape(RoundedRectangle(cornerRadius: 15))
         .sheet(isPresented: $isShowSafari) {
             SafariView(url: article.url)
+                .ignoresSafeArea(edges: [.bottom])
         }
     }
 }
