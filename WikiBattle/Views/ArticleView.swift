@@ -14,6 +14,7 @@ struct ArticleView: View {
     
     @Binding var isCheckingAnswer: Bool
     @Binding var isCorrect: Bool
+    @Binding var isShowSafari: Bool
     
     var body: some View {
         VStack {
@@ -33,8 +34,9 @@ struct ArticleView: View {
                     Spacer()
                     
                     if (isCheckingAnswer) {
-                        Text("記事を見る")
-                            .foregroundStyle(.link)
+                        Button("記事を見る") {
+                            isShowSafari = true
+                        }
                     }
                 }
                 
@@ -75,13 +77,17 @@ struct ArticleView: View {
         .frame(height: 240)
         .background(Color(.secondarySystemFill))
         .clipShape(RoundedRectangle(cornerRadius: 15))
+        .sheet(isPresented: $isShowSafari) {
+            SafariView(url: article.url)
+        }
     }
 }
 
 #Preview {
     @Previewable @State var isCheckingAnswer = true
     @Previewable @State var isCorrect: Bool = true
+    @Previewable @State var isShowSafari: Bool = false
     
     ArticleView(article: WikiArticle.WikiPage(pageid: 1, title: "記事1記事1記事1記事1記事1記事1記事1記事1記事1記事1", extract: "サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", pageviews: ["a": 1, "b": 2, "c": nil]),
-                isCorrectLength: false, isCorrectBrowse: true, isCheckingAnswer: $isCheckingAnswer, isCorrect: $isCorrect)
+                isCorrectLength: false, isCorrectBrowse: true, isCheckingAnswer: $isCheckingAnswer, isCorrect: $isCorrect, isShowSafari: $isShowSafari)
 }

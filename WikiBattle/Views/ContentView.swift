@@ -11,6 +11,8 @@ struct ContentView: View {
     @ObservedObject var quizViewModel = QuizViewModel()
     @State var isCheckingAnswer = false
     @State var isCorrect: Bool = false
+    @State var isShowUpperSafari: Bool = false
+    @State var isShowUnderSafari: Bool = false
     
     var body: some View {
         
@@ -38,7 +40,8 @@ struct ContentView: View {
                     isCorrectLength: quiz.upperArticle.pageid == quiz.correctLengthArcicleId,
                     isCorrectBrowse: quiz.upperArticle.pageid == quiz.correctBrowseArcicleId,
                     isCheckingAnswer: $isCheckingAnswer,
-                    isCorrect: $isCorrect
+                    isCorrect: $isCorrect,
+                    isShowSafari: $isShowUpperSafari
                 )
                 
                 // 2つ目の記事
@@ -47,7 +50,8 @@ struct ContentView: View {
                     isCorrectLength: quiz.underArticle.pageid == quiz.correctLengthArcicleId,
                     isCorrectBrowse: quiz.underArticle.pageid == quiz.correctBrowseArcicleId,
                     isCheckingAnswer: $isCheckingAnswer,
-                    isCorrect: $isCorrect
+                    isCorrect: $isCorrect,
+                    isShowSafari: $isShowUnderSafari
                 )
             } else {
                 progress

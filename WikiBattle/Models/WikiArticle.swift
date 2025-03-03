@@ -46,5 +46,13 @@ struct WikiArticle: Codable {
             self.pageviews.values.compactMap { $0 ?? 0 }.reduce(0, +)
         }
         
+        // 記事のURL
+        var url: URL {
+            var url = URL(string: "http://ja.m.wikipedia.org/w/index.php")!
+            url.append(queryItems: [.init(name: "curid", value: String(self.pageid))])
+            
+            return url
+        }
+        
     }
 }
