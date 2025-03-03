@@ -9,8 +9,8 @@ import SwiftUI
 struct ContentView: View {
     
     @ObservedObject var quizViewModel = QuizViewModel()
-    
     @State var isCheckingAnswer = false
+    @State var isCorrect: Bool = false
     
     var body: some View {
         
@@ -25,8 +25,8 @@ struct ContentView: View {
             Text("「長い？」 or 「閲覧数が多い？」")
                 .font(.title2)
             
-            Text("正解")
-                .foregroundStyle(.green)
+            Text(isCorrect ? "正解" : "不正解")
+                .foregroundStyle(isCorrect ? .green : .red)
                 .font(.title2)
                 .opacity(isCheckingAnswer ? 1 : 0)
             
@@ -37,7 +37,8 @@ struct ContentView: View {
                     article: quiz.upperArticle,
                     isCorrectLength: quiz.upperArticle.pageid == quiz.correctLengthArcicleId,
                     isCorrectBrowse: quiz.upperArticle.pageid == quiz.correctBrowseArcicleId,
-                    isCheckingAnswer: $isCheckingAnswer
+                    isCheckingAnswer: $isCheckingAnswer,
+                    isCorrect: $isCorrect
                 )
                 
                 // 2つ目の記事
@@ -45,7 +46,8 @@ struct ContentView: View {
                     article: quiz.underArticle,
                     isCorrectLength: quiz.underArticle.pageid == quiz.correctLengthArcicleId,
                     isCorrectBrowse: quiz.underArticle.pageid == quiz.correctBrowseArcicleId,
-                    isCheckingAnswer: $isCheckingAnswer
+                    isCheckingAnswer: $isCheckingAnswer,
+                    isCorrect: $isCorrect
                 )
             } else {
                 progress
