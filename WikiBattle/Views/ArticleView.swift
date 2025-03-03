@@ -11,7 +11,7 @@ struct ArticleView: View {
     let article: WikiArticle.WikiPage
     let isCorrectLength: Bool
     let isCorrectBrowse: Bool
-    var isCheckingAnswer: Bool = false
+    @Binding var isCheckingAnswer: Bool
     
     var body: some View {
         VStack {
@@ -58,10 +58,12 @@ struct ArticleView: View {
                 } else {
                     ButtonView(buttonType: .length) {
                         print("Length Pushed")
+                        isCheckingAnswer = true
                     }
                     
                     ButtonView(buttonType: .browse) {
                         print("Browse Pushed")
+                        isCheckingAnswer = true
                     }
                 }
                 
@@ -75,6 +77,7 @@ struct ArticleView: View {
 }
 
 #Preview {
+    @Previewable @State var isCheckingAnswer = true
     ArticleView(article: WikiArticle.WikiPage(pageid: 1, title: "記事1記事1記事1記事1記事1記事1記事1記事1記事1記事1", extract: "サンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキストサンプルテキスト", pageviews: ["a": 1, "b": 2, "c": nil]),
-                isCorrectLength: false, isCorrectBrowse: true, isCheckingAnswer: true)
+                isCorrectLength: false, isCorrectBrowse: true, isCheckingAnswer: $isCheckingAnswer)
 }

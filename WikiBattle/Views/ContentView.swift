@@ -10,7 +10,7 @@ struct ContentView: View {
     
     @ObservedObject var quizViewModel = QuizViewModel()
     
-    @State var isCheckingAnswer = true
+    @State var isCheckingAnswer = false
     
     var body: some View {
         
@@ -37,7 +37,7 @@ struct ContentView: View {
                     article: quiz.upperArticle,
                     isCorrectLength: quiz.upperArticle.pageid == quiz.correctLengthArcicleId,
                     isCorrectBrowse: quiz.upperArticle.pageid == quiz.correctBrowseArcicleId,
-                    isCheckingAnswer: isCheckingAnswer
+                    isCheckingAnswer: $isCheckingAnswer
                 )
                 
                 // 2つ目の記事
@@ -45,7 +45,7 @@ struct ContentView: View {
                     article: quiz.underArticle,
                     isCorrectLength: quiz.underArticle.pageid == quiz.correctLengthArcicleId,
                     isCorrectBrowse: quiz.underArticle.pageid == quiz.correctBrowseArcicleId,
-                    isCheckingAnswer: isCheckingAnswer
+                    isCheckingAnswer: $isCheckingAnswer
                 )
             } else {
                 progress
@@ -55,7 +55,7 @@ struct ContentView: View {
             
             // 次の問題を出題するボタン
             ButtonView(buttonType: .next) {
-                print("Next Pushed")
+                isCheckingAnswer = false
                 Task {
                     await quizViewModel.createQuiz()
                 }
