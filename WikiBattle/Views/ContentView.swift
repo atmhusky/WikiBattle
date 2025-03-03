@@ -48,10 +48,8 @@ struct ContentView: View {
                     isCheckingAnswer: isCheckingAnswer
                 )
             } else {
-                Text("")
-                .onAppear() {
-                    print("読込中")
-                }
+                progress
+                progress
             }
             
             
@@ -71,4 +69,16 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+}
+
+extension ContentView {
+    
+    private var progress: some View {
+        ProgressView()
+            .padding()
+            .frame(maxWidth: .infinity ,maxHeight: 240)
+            .background(Color(.secondarySystemFill))
+            .clipShape(RoundedRectangle(cornerRadius: 15))
+    }
+    
 }
