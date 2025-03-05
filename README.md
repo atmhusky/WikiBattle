@@ -3,7 +3,7 @@
 ## アプリケーションの概要
 
 異なる2つのWikipediaの記事のタイトルと冒頭の文章だけを見比べて，
-どちらの記事の「文字数が多い」あるいは「多く閲覧されている」かを当てるクイズゲーム．
+どちらの記事が「文字数が多い」あるいは「多く閲覧されている」かを当てるクイズゲーム．
 元ネタは[WikiArena](https://store.steampowered.com/app/2090700/WikiArena/?l=japanese)というゲーム．
 
 このゲームは，自分の持っている背景知識を頼りに推察する能力を鍛えられたり，
@@ -20,9 +20,9 @@
 <![light_ans](images/light_ans.png))> -->
 
 <p align="center">
-  <img src="images/light_ques.png" width="230"> 
-  &nbsp;&nbsp;→&nbsp;&nbsp;
-  <img src="images/light_ans.png" width="230">
+  <kbd><img src="images/light_ques.png" width="230" style="border: 1px red solid;"></kbd>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd><img src="images/light_ans.png" width="230"></kbd>
 </p>
 
 いずれかのボタンをタップすると，それぞれの記事の文字数・閲覧数が表示され，正解・不正解の判定が表示される．
@@ -34,13 +34,13 @@
 
 - 言語：Swift
 - フレームワーク：SwiftUI, UIKit
-- API: Media Wiki API
+- API：Media Wiki API
 
 ## 工夫した点
 
 ### MVVMアーキテクチャの利用
 
-Model・View・ViewModelに独立させて実装した：
+Model・View・ViewModelに独立させて実装した．これにより，以下のメリットを得られた：
 
 - UIロジックとデータ処理を分離しすることで，コードの見通しが良くなった
 - コンポーネントの再利用が容易になり，新機能の追加や仕様変更にも対応しやすくなった
@@ -60,10 +60,10 @@ MVVMアーキテクチャを導入したので，フォルダ構成も`Models`�
 
 ### ブランチ管理
 
-個人開発で小規模なアプリであるため，今回はGitHub Flowを採用した：
+個人開発で小規模なアプリであるため，今回はGitHub Flowを採用した．これにより，以下のメリットを得られた：
 
 - `feature/XXX`のように機能ごとにブランチを分けることで，1つの機能に集中しやすくなった
-- mainブランチは動作確認が完了したものだけをマージすることで安定した状態を維持できるようにした
+- mainブランチは動作確認が完了したものだけをマージすることで安定した状態を維持できるようになった
 - 開発の進捗管理がしやすくなった
 
 ### ライト・ダークモード両対応
@@ -71,9 +71,9 @@ MVVMアーキテクチャを導入したので，フォルダ構成も`Models`�
 どちらの表示に設定していたとしても，問題なく画面表示が行えるように工夫した．
 
   <p align="center">
-    <img src="images/dark_ques.png" width="230"> 
-    &nbsp;&nbsp;→&nbsp;&nbsp;
-    <img src="images/dark_ans.png" width="230">
+    <kbd><img src="images/dark_ques.png" width="230"></kbd>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <kbd><img src="images/dark_ans.png" width="230"></kbd>
   </p> 
 
 ### 問題として不適切なものを防ぐ機能を導入
@@ -96,13 +96,10 @@ MVVMアーキテクチャを導入したので，フォルダ構成も`Models`�
 
 - 多言語対応
   - 現在は日本語の記事のみに対応しているので，設定で他の言語を選択できるようにしたい
-
 - よりゲーム性を持たせる
   - 現在は「出題」→「回答」→「次の出題」を繰り返すだけなので，連続正解数の目標やHP(間違えて良い回数)を設けることで
     ゲームとして「かけひき」を行えるようにしたい
-
 - ランキング機能
   - ユーザ登録機能を実装して，連続正解数を他のユーザと競える機能を追加したい
-  
 - アプリのリリース
   - 実際にリリース作業を経験し，他のユーザからのフィードバックをもらいたい
