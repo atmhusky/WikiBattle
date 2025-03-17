@@ -33,7 +33,7 @@
 ## 技術スタック
 
 - 言語：Swift
-- フレームワーク：SwiftUI, UIKit
+- フレームワーク：SwiftUI, SafariServices
 - API：Media Wiki API
 
 ## 工夫した点
