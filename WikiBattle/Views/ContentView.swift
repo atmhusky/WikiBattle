@@ -17,7 +17,7 @@ struct ContentView: View {
     var body: some View {
         
         VStack(spacing: 20) {
-            Text("WikiButtle")
+            Text("WikiBattle")
                 .font(.title)
                 .fontWeight(.bold)
             
